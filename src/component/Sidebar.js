@@ -1,10 +1,15 @@
 import { Drawer } from "@mui/material";
 import SidebarHeader from "./SidebarHeader";
 import SidebarCalendarList from "./SidebarCalendarList";
+import { useEffect, useState } from "react";
 
 const Sidebar = ({ sidebar, toggleSidebar }) => {
 
-    const container = window !== undefined ? () => window.document.body : undefined;
+    const [container, setContainer] = useState(undefined);
+
+    useEffect(() => {
+        setContainer(window.document.body);
+    }, [])
 
     return (
         <Drawer

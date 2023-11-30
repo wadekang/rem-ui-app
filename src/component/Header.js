@@ -1,81 +1,109 @@
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import ListRoundedIcon from '@mui/icons-material/ListRounded';
-import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
-import { useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import HeaderDatePicker from "./HeaderDatePicker";
 
-const Header = ({ view, setView, toggleSidebar }) => {
+const Header = ({ toggleSidebar }) => {
 
     const [datePick, setDatePick] = useState(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+    useEffect(() => {
+
+        if (datePick) {
+            setIsDrawerOpen(true);
+        } else {
+            setTimeout(() => {
+                setIsDrawerOpen(false);
+            }, 150);
+        }
+
+    }, [datePick])
+
+    const toggleDatePick = () => setDatePick(!datePick);
+
+    const onClickMenu = () => {
+        toggleSidebar();
+        setDatePick(false);
+    }
 
 	return (
-		<div 
-            style={{ 
-                height: "40px", 
-                padding: "3px 7px",
-                borderBottom: "1px solid #e0e0e0",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-            }}
-        >
-			<div
-                style={{
+		<Fragment>
+            <HeaderDatePicker 
+                datePick={datePick}
+                toggleDatePick={toggleDatePick}
+            />
+            <div 
+                style={{ 
+                    height: "40px", 
+                    padding: "3px 15px",
                     display: "flex",
+                    width: "100%",
+                    justifyContent: "space-between",
                     alignItems: "center",
+                    marginBottom: "10px",
+                    
+                    backgroundColor: isDrawerOpen ? "rgb(63, 61, 67)" : "white",
+                    color: isDrawerOpen ? "white": "black",
+
+                    zIndex: 4,
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
                 }}
             >
-                <MenuRoundedIcon 
-                    style={{
-                        marginRight: "10px",
-                    }}
-                    onClick={toggleSidebar}
-                />
-                
                 <div
                     style={{
-                        textAlign: "center",
-                        fontWeight: 700,
-                        fontSize: 16,
-                        marginRight: "5px",
+                        display: "flex",
+                        alignItems: "center",
                     }}
                 >
-                    2023. 11
+                    <MenuRoundedIcon 
+                        style={{
+                            marginRight: "10px",
+                        }}
+                        onClick={onClickMenu}
+                    />
+                    
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                        onClick={toggleDatePick}
+                    >
+                        <div
+                            style={{
+                                textAlign: "center",
+                                fontWeight: 800,
+                                fontSize: 18,
+                                marginRight: "5px",
+                            }}
+                        >
+                            2023. 11
+                        </div>
+                        {isDrawerOpen 
+                        ? (
+                            <KeyboardArrowUpRoundedIcon />
+                        )
+                        : (
+                            <KeyboardArrowDownRoundedIcon />
+                        )
+                        }
+                    </div>
                 </div>
-                {datePick 
-                ? (
-                    <KeyboardArrowUpRoundedIcon 
-                        onClick={() => setDatePick(false)}
+                <div>
+                    <SearchRoundedIcon 
+                        style={{ }}
+                        onClick={() => {
+                            setDatePick(false);
+                        }}
                     />
-                )
-                : (
-                    <KeyboardArrowDownRoundedIcon 
-                        onClick={() => setDatePick(true)}
-                    />
-                )
-                }
+                </div>
             </div>
-            <div>
-                <SearchRoundedIcon 
-                    style={{ marginRight: "10px" }}
-                    onClick={() => setView("search")}
-                />
-                {view === "list" 
-                ? (
-                    <CalendarMonthRoundedIcon 
-                        onClick={() => setView("calendar")} 
-                    />
-                ) 
-                : (
-                    <ListRoundedIcon 
-                        onClick={() => setView("list")} 
-                    />
-                )
-                }
-            </div>
-		</div>
+        </Fragment>
 	);
 };
 

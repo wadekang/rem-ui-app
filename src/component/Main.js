@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import Calendar from "./Calendar";
+
+import "./Main.css";
 
 const Main = () => {
 
-    const [view, setView] = useState("calendar");
     const [sidebar, setSidebar] = useState(false);
+    const [selectedYear, setSelectedYear] = useState(2023);
+    const [selectedMonth, setSelectedMonth] = useState(10); // 0 ~ 11
 
     const toggleSidebar = () => setSidebar(!sidebar);
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <div className="main-body">
@@ -16,11 +24,12 @@ const Main = () => {
                 toggleSidebar={toggleSidebar}
             />
             <Header 
-                view={view}
-                setView={(val) => setView(val)}
                 toggleSidebar={toggleSidebar}
             />
-            Hello World!
+            <Calendar 
+                selectedYear={selectedYear}
+                selectedMonth={selectedMonth}
+            />
         </div>
     )
 }
