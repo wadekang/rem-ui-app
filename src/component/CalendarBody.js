@@ -1,24 +1,28 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import CalendarDayInMonth from "./CalendarDayInMonth";
 import { Divider } from "@mui/material";
+import { SelectedContext } from "./Main";
 
-const CalendarBody = ({ selectedYear, selectedMonth }) => {
+const CalendarBody = () => {
+
+    const { selectedDate } = useContext(SelectedContext);
 
     const [dates, setDates] = useState([]);
+    const [events, setEvents] = useState([]);
 
     useEffect(() => {
 
-        const { startWeek, endWeek } = getWeekRange(selectedYear, selectedMonth);
+        const { startWeek, endWeek } = getWeekRange(selectedDate.year, selectedDate.month);
 
         const newDates = [];
 
         for (var i=startWeek; i<=endWeek; i++) {
-            const weekDates = getDatesOfWeek(selectedYear, i);
+            const weekDates = getDatesOfWeek(selectedDate.year, i);
             newDates.push(weekDates);
         }
 
         setDates(newDates);
-    }, [])
+    }, [selectedDate])
 
     const getWeekRange = (year, month) => {
         const firstDayOfMonth = new Date(year, month, 1);
@@ -48,8 +52,14 @@ const CalendarBody = ({ selectedYear, selectedMonth }) => {
         });
     }
 
+    const getEvents = (year, startWeek, endWeek) => {
+        // Get Events From DB
+
+
+    }
+
     const onClick = (date) => {
-        console.log(date);
+        
     }
 
     return (
@@ -74,8 +84,6 @@ const CalendarBody = ({ selectedYear, selectedMonth }) => {
                         {weekDates.map((date, dateIndex) => (
                             <CalendarDayInMonth 
                                 key={dateIndex}
-                                selectedYear={selectedYear}
-                                selectedMonth={selectedMonth}
                                 date={date}
                                 onClick={onClick}
                             />

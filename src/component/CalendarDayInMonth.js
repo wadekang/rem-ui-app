@@ -1,8 +1,12 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { SelectedContext } from "./Main";
 
-const CalendarDayInMonth = ({ selectedYear, selectedMonth, date, onClick }) => {
+const CalendarDayInMonth = ({ date, onClick }) => {
+
+    const { selectedDate } = useContext(SelectedContext);
 
     useEffect(() => {
+
 
     }, [])
 
@@ -18,8 +22,9 @@ const CalendarDayInMonth = ({ selectedYear, selectedMonth, date, onClick }) => {
                 flexDirection: 'column',
                 alignItems: 'center',
 
-                opacity: date.getMonth() === selectedMonth ? 1.0 : 0.3,
+                opacity: date.getMonth() === selectedDate.month ? 1.0 : 0.3,
                 color: date.getDay() === 0 ? "red" : date.getDay() === 6 ? "blue" : "black",
+                overflow: "hidden",
             }}
             onClick={() => onClick(date)}
         >

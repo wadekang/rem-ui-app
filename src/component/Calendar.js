@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import CalendarBody from "./CalendarBody";
 import CalendarHeader from "./CalendarHeader";
 
-const Calendar = ({ selectedYear, selectedMonth }) => {
+const Calendar = () => {
 
     useEffect(() => {
 
@@ -18,10 +18,7 @@ const Calendar = ({ selectedYear, selectedMonth }) => {
             fontSize: "12px",
         }}>
             <CalendarHeader />
-            <CalendarBody 
-                selectedYear={selectedYear}
-                selectedMonth={selectedMonth}
-            />
+            <CalendarBody />
         </div>
     )
 }

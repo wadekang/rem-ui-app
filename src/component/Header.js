@@ -2,10 +2,13 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import HeaderDatePicker from "./HeaderDatePicker";
+import { SelectedContext } from "./Main";
 
 const Header = ({ toggleSidebar }) => {
+
+    const { selectedDate } = useContext(SelectedContext);
 
     const [datePick, setDatePick] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -82,7 +85,7 @@ const Header = ({ toggleSidebar }) => {
                                 marginRight: "5px",
                             }}
                         >
-                            2023. 11
+                            {selectedDate.year}. {selectedDate.month + 1}
                         </div>
                         {isDrawerOpen 
                         ? (

@@ -1,12 +1,13 @@
+import { Fragment } from "react";
 import Main from "./component/Main";
 
-
 const App = () => {
-  return (
-    <div className="w-screen h-screen">
-      <Main />
-    </div>
-  );
-}
+
+	return (
+		<Fragment>
+			<Main />
+		</Fragment>
+	);
+};
 
 export default App;
