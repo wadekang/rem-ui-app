@@ -46,7 +46,6 @@ const Header = ({ toggleSidebar }) => {
                     width: "100%",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    marginBottom: "10px",
                     
                     backgroundColor: isDrawerOpen ? "rgb(63, 61, 67)" : "white",
                     color: isDrawerOpen ? "white": "black",

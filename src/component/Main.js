@@ -13,7 +13,7 @@ const Main = () => {
 
     const [selectedDate, setSelectedDate] = useState({
         year: new Date().getFullYear(),
-        month: new Date().getMonth() - 1, // 0 ~ 11
+        month: new Date().getMonth(), // 0 ~ 11
     });
 
     const toggleSidebar = () => setSidebar(!sidebar);

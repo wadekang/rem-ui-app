@@ -2,13 +2,13 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import CalendarDayInMonth from "./CalendarDayInMonth";
 import { Divider } from "@mui/material";
 import { SelectedContext } from "./Main";
+import CalendarWeek from "./CalendarWeek";
 
 const CalendarBody = () => {
 
     const { selectedDate } = useContext(SelectedContext);
 
     const [dates, setDates] = useState([]);
-    const [events, setEvents] = useState([]);
 
     useEffect(() => {
 
@@ -18,10 +18,15 @@ const CalendarBody = () => {
 
         for (var i=startWeek; i<=endWeek; i++) {
             const weekDates = getDatesOfWeek(selectedDate.year, i);
-            newDates.push(weekDates);
+            
+            newDates.push({
+                weekNum: i,
+                weekDates: weekDates,
+            });
         }
 
         setDates(newDates);
+
     }, [selectedDate])
 
     const getWeekRange = (year, month) => {
@@ -52,12 +57,6 @@ const CalendarBody = () => {
         });
     }
 
-    const getEvents = (year, startWeek, endWeek) => {
-        // Get Events From DB
-
-
-    }
-
     const onClick = (date) => {
         
     }
@@ -71,25 +70,13 @@ const CalendarBody = () => {
                 flex: 1
             }}
         >
-            {dates.map((weekDates, weekIndex) => (
-                <Fragment key={weekIndex}>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            flex: 1,
-                            padding: "0px 5px",
-                        }}
-                    >
-                        {weekDates.map((date, dateIndex) => (
-                            <CalendarDayInMonth 
-                                key={dateIndex}
-                                date={date}
-                                onClick={onClick}
-                            />
-                        ))}
-                    </div>
-                    {weekIndex !== dates.length - 1 && <Divider />}
+            {dates.map((date, idx) => (
+                <Fragment key={idx}>
+                    <CalendarWeek 
+                        weekNum={date.weekNum}
+                        weekDates={date.weekDates}
+                    />
+                    {idx !== dates.length - 1 && <Divider />}
                 </Fragment>
             ))}
         </div>
