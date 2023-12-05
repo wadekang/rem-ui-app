@@ -1,12 +1,12 @@
 import { Drawer } from "@mui/material";
 import { useCallback, useContext, useEffect, useState } from "react";
 import Picker from "react-mobile-picker";
-import { SelectedContext } from "./Main";
 import { unstable_batchedUpdates } from "react-dom";
+import { useDate } from "./provider/DateProvider";
 
 const HeaderDatePicker = ({ datePick, toggleDatePick }) => {
     
-    const { selectedDate, setSelectedDate } = useContext(SelectedContext);
+    const { selectedDate, setSelectedDate } = useDate();
 
     const [container, setContainer] = useState(undefined);
     const [date, setDate] = useState({

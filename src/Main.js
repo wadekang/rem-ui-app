@@ -1,20 +1,14 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Calendar from "./Calendar";
 
 import "./Main.css";
-
-export const SelectedContext = createContext();
+import { DateProvider } from "./provider/DateProvider";
 
 const Main = () => {
 
     const [sidebar, setSidebar] = useState(false);
-
-    const [selectedDate, setSelectedDate] = useState({
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(), // 0 ~ 11
-    });
 
     const toggleSidebar = () => setSidebar(!sidebar);
 
@@ -33,8 +27,8 @@ const Main = () => {
     }, [])
 
     return (
-        <SelectedContext.Provider value={{ selectedDate, setSelectedDate }}>
-            <div className="main-body">
+        <div className="main-body">
+            <DateProvider>
                 <Sidebar 
                     sidebar={sidebar}
                     toggleSidebar={toggleSidebar}
@@ -43,8 +37,8 @@ const Main = () => {
                     toggleSidebar={toggleSidebar}
                 />
                 <Calendar />
-            </div>
-        </SelectedContext.Provider>
+            </DateProvider>
+        </div>
     )
 }
 

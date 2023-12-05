@@ -1,11 +1,25 @@
-import { Fragment } from "react";
-import Main from "./component/Main";
+import { Fragment, useEffect } from "react";
+import Main from "./Main";
+import { useAuth } from "./provider/AuthProvider";
+import Login from "./Login";
 
 const App = () => {
 
+	const { isLogin, userInfo } = useAuth();
+
+	useEffect(() => {
+
+		console.log('userInfo', userInfo);
+
+	}, [userInfo])
+
 	return (
 		<Fragment>
-			<Main />
+			{isLogin ? (
+				<Main />
+			) : (
+				<Login />
+			)}
 		</Fragment>
 	);
 };

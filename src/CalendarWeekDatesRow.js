@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { SelectedContext } from "./Main";
+import { useDate } from "./provider/DateProvider";
 
 const CalendarWeekDatesRow = ({ weekDates }) => {
 
-    const { selectedDate } = useContext(SelectedContext);
+    const { selectedDate } = useDate();
 
     return (
         <div

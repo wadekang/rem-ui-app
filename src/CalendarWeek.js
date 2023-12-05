@@ -1,12 +1,12 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { SelectedContext } from "./Main";
+import { useEffect, useRef, useState } from "react";
 import CalendarWeekDatesRow from "./CalendarWeekDatesRow";
 import CalendarWeekEventsRow from "./CalendarWeekEventsRow";
+import { useDate } from "./provider/DateProvider";
 
 const CalendarWeek = ({ weekNum, weekDates }) => {
 
     const ref = useRef(null);
-    const { selectedDate } = useContext(SelectedContext);
+    const { selectedDate } = useDate();
 
     const [events, setEvents] = useState([]);
     const [eventMap, setEventMap] = useState([]);

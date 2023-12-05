@@ -1,12 +1,11 @@
-import { Fragment, useContext, useEffect, useState } from "react";
-import CalendarDayInMonth from "./CalendarDayInMonth";
+import { Fragment, useEffect, useState } from "react";
 import { Divider } from "@mui/material";
-import { SelectedContext } from "./Main";
 import CalendarWeek from "./CalendarWeek";
+import { useDate } from "./provider/DateProvider";
 
 const CalendarBody = () => {
 
-    const { selectedDate } = useContext(SelectedContext);
+    const { selectedDate } = useDate();
 
     const [dates, setDates] = useState([]);
 
