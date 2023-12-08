@@ -1,7 +1,6 @@
 import { Drawer } from "@mui/material";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Picker from "react-mobile-picker";
-import { unstable_batchedUpdates } from "react-dom";
 import { useDate } from "./provider/DateProvider";
 
 const HeaderDatePicker = ({ datePick, toggleDatePick }) => {
@@ -20,15 +19,13 @@ const HeaderDatePicker = ({ datePick, toggleDatePick }) => {
 
     const handlePickerChange = useCallback((newVal, key) => {
 
-        unstable_batchedUpdates(() => {
-            setSelectedDate({
-                year: parseInt(newVal.year),
-                month: parseInt(newVal.month) - 1,
-            });
-    
-            setDate({
-                ...newVal,
-            })
+        setSelectedDate({
+            year: parseInt(newVal.year),
+            month: parseInt(newVal.month) - 1,
+        });
+
+        setDate({
+            ...newVal,
         })
 
     }, [])

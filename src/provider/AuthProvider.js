@@ -1,3 +1,4 @@
+import axiosInstance from "../config/axiosInstance";
 import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
@@ -13,8 +14,18 @@ export const AuthProvider = ({ children }) => {
     }
 
     const logout = () => {
-        setIsLogin(false);
-        setUserInfo(undefined);
+
+        axiosInstance.get('http://localhost:12012/api/auth/logout', {
+            withCredentials: true,
+        })
+        .then(res => res.data)
+        .then(data => {
+            setIsLogin(false);
+            setUserInfo(undefined);
+        })
+        .catch(err => {
+            console.log('logout error', err);
+        })
     }
 
     return (

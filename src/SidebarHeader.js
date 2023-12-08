@@ -1,6 +1,14 @@
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import { useAuth } from './provider/AuthProvider';
 
 const SidebarHeader = () => {
+
+    const { userInfo, logout } = useAuth();
+
+    const handleLogout = () => {
+        logout();
+    }
+
     return (
         <div style={{
             display: "flex",
@@ -14,13 +22,13 @@ const SidebarHeader = () => {
                 alignItems: "center",
             }}>
                 <img 
-                    src={process.env.PUBLIC_URL + '/profile_image_default.png'}
+                    src={userInfo.profileImageUrl}
                     alt="profile_image"
                     style={{
-                        width: "55px",
-                        height: "55px",
+                        width: "35px",
+                        height: "35px",
                         borderRadius: "50%",
-                        marginRight: "2px",
+                        marginRight: "10px",
                     }}
                 />
                 <div style={{
@@ -35,7 +43,7 @@ const SidebarHeader = () => {
                             fontSize: "18px",
                         }}
                     >
-                        강현석
+                        {userInfo.name}
                     </div>
                     <div
                         style={{
@@ -43,7 +51,7 @@ const SidebarHeader = () => {
                             color: "#808080",
                         }}
                     >
-                        hsuk6032@gmail.com
+                        {userInfo.email}
                     </div>
                 </div>
             </div>
@@ -51,6 +59,7 @@ const SidebarHeader = () => {
                 style={{
                     fontSize: "28px"
                 }}
+                onClick={handleLogout}
             />
         </div>
     );

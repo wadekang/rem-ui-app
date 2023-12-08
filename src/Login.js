@@ -1,17 +1,33 @@
 import { useAuth } from "./provider/AuthProvider";
 import "./Main.css";
+import { GoogleLogin } from "@react-oauth/google";
+import { useEffect } from "react";
+import axiosInstance from "./config/axiosInstance";
 
 const Login = () => {
 
     const { login } = useAuth();
 
-    const handleLogin = () => {
+    useEffect(() => {
 
-        login({
-            userId: 1,
-            name: 'John Doe',
-            email: 'user1@test.com',
-            role: 'ROLE_USER',
+    }, [])
+
+    const handleSuccess = (response) => {
+
+        axiosInstance.post('http://localhost:12012/api/auth/login/google', {
+            credential: response.credential
+        }, {})
+        .then(res => res.data)
+        .then(data => {
+
+            if (data.code === 200) {
+                login({
+                    /* 
+                        userId, name, email, profileImageUrl
+                    */
+                    ...data.data,
+                })
+            }
         })
     }
 
@@ -25,7 +41,12 @@ const Login = () => {
                 alignItems: 'center',
             }}
         >
-            <button onClick={handleLogin}>Login</button>
+            <GoogleLogin 
+                onSuccess={(response) => handleSuccess(response)}
+                onError={(error) => console.log('google login error', error)}
+                width={"220px"}
+                useOneTap
+            />
         </div>
     )
 }
