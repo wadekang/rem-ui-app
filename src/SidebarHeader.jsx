@@ -22,7 +22,7 @@ const SidebarHeader = () => {
                 alignItems: "center",
             }}>
                 <img 
-                    src={userInfo.profileImageUrl}
+                    src={userInfo.profileImageUrl ? userInfo.profileImageUrl : process.env.REACT_APP_REM_DEFAULT_PROFILE_IMAGE_URL}
                     alt="profile_image"
                     style={{
                         width: "35px",

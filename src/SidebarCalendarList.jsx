@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
-const SidebarCalendarList = ({ title, calendars }) => {
+const SidebarCalendarList = ({ title, calendars, addCalendar, editCalendar }) => {
 
     const [checked, setChecked] = useState(undefined);
 
@@ -15,7 +15,7 @@ const SidebarCalendarList = ({ title, calendars }) => {
 
         const temp = [];
         for (let i = 0; i < calendars.length; i++) {
-            temp.push(false);
+            temp.push(true);
         }
         setChecked(temp);
 
@@ -45,11 +45,12 @@ const SidebarCalendarList = ({ title, calendars }) => {
                         fontSize: "20px",
                         opacity: 0.5
                     }}
+                    onClick={addCalendar}
                 />
             </div>
             <div>
                 {calendars && checked && calendars.map((calendar, idx) => (
-                    <div key={calendar.id} style={{
+                    <div key={calendar.calendarId} style={{
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
@@ -84,7 +85,7 @@ const SidebarCalendarList = ({ title, calendars }) => {
                                         style={{
                                             color: "white",
                                             fontSize: "18px",
-                                            fontWeight: 700,
+                                            fontWeight: 900,
                                         }}
                                     />
                                 )}
@@ -92,7 +93,7 @@ const SidebarCalendarList = ({ title, calendars }) => {
                             <div style={{
                                 fontSize: "16px",
                             }}>
-                                {calendar.name}
+                                {calendar.default ? "[기본] " + calendar.calendarName : calendar.calendarName}
                             </div>
                         </div>
                         <ArrowCircleRightOutlinedIcon 
@@ -101,6 +102,7 @@ const SidebarCalendarList = ({ title, calendars }) => {
                                 color: "#808080",
                                 opacity: 0.5
                             }}
+                            onClick={() => editCalendar(calendar)}
                         /> 
                     </div>
                 ))}

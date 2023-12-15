@@ -18,13 +18,19 @@ const Main = () => {
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
 
-        // resize 이벤트가 발생할 때마다 vh를 다시 계산하여 설정 - 현재 아이폰만 사용할 예정이므로 주석 처리
-        // window.addEventListener('resize', () => {
-        //     let vh = window.innerHeight * 0.01;
-        //     document.documentElement.style.setProperty('--vh', `${vh}px`);
-        // });
+        window.addEventListener('resize', resizeEvnetListener);
+        
+        return () => {
+            window.removeEventListener('resize', resizeEvnetListener);
+        }
 
     }, [])
+
+    // resize 이벤트가 발생할 때마다 vh를 다시 계산하여 설정
+    const resizeEvnetListener = () => {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
 
     return (
         <div className="main-body">
