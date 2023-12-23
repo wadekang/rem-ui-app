@@ -1,12 +1,14 @@
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import { useAuth } from './provider/AuthProvider';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutAction, selectUserInfo } from '../redux/auth/authSlice';
 
 const SidebarHeader = () => {
 
-    const { userInfo, logout } = useAuth();
+    const dispatch = useDispatch();
+    const userInfo = useSelector(selectUserInfo);
 
     const handleLogout = () => {
-        logout();
+        dispatch(logoutAction());
     }
 
     return (
@@ -22,7 +24,7 @@ const SidebarHeader = () => {
                 alignItems: "center",
             }}>
                 <img 
-                    src={userInfo.profileImageUrl ? userInfo.profileImageUrl : process.env.REACT_APP_REM_DEFAULT_PROFILE_IMAGE_URL}
+                    src={userInfo.profileImageUrl ? userInfo.profileImageUrl : '/profile_image_default.png'}
                     alt="profile_image"
                     style={{
                         width: "35px",

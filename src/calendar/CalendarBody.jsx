@@ -1,17 +1,18 @@
 import { Fragment, useEffect, useState } from "react";
 import { Divider } from "@mui/material";
 import CalendarWeek from "./CalendarWeek";
-import { useDate } from "./provider/DateProvider";
-import useAxiosInterceptor from "./config/useAxiosInterceptor";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEventsByDate, selectEvents } from "../redux/event/eventSlice";
+import { selectSelectedDate } from "../redux/date/dateSlice";
 
 const CalendarBody = () => {
 
-    const { selectedDate } = useDate();
+    const selectedDate = useSelector(selectSelectedDate);
 
     const [dates, setDates] = useState([]);
-    const [events, setEvents] = useState([]);
 
-    const { axiosInstance } = useAxiosInterceptor();
+    const dispatch = useDispatch();
+    const events = useSelector(selectEvents);
 
     useEffect(() => {
 
@@ -102,29 +103,7 @@ const CalendarBody = () => {
             }
         */
 
-        axiosInstance.post('/api/event/getEvents', {
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
-        }, {})
-        .then(res => res.data)
-        .then(data => {
-            if (data.code === 200) {
-                const newEvents = [];
-
-                data.data.forEach(e => {
-                    newEvents.push({
-                        calendarId: e.calendarId,
-                        color: e.calendarColor,
-                        eventId: e.eventId,
-                        eventName: e.eventName,
-                        startDate: new Date(e.eventStartDate),
-                        endDate: new Date(e.eventEndDate),
-                    })
-                })
-
-                setEvents(newEvents);
-            }
-        })
+        dispatch(fetchEventsByDate(startDate, endDate));
     }
 
     const onClick = (date) => {

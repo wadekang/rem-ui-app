@@ -4,11 +4,12 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import { Fragment, useEffect, useState } from "react";
 import HeaderDatePicker from "./HeaderDatePicker";
-import { useDate } from "./provider/DateProvider";
+import { useSelector } from "react-redux";
+import { selectSelectedDate } from "./redux/date/dateSlice";
 
 const Header = ({ toggleSidebar }) => {
 
-    const { selectedDate } = useDate();
+    const selectedDate = useSelector(selectSelectedDate);
 
     const [datePick, setDatePick] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);

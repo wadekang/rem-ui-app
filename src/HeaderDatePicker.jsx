@@ -1,11 +1,13 @@
 import { Drawer } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Picker from "react-mobile-picker";
-import { useDate } from "./provider/DateProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { selectSelectedDate, setSelectedDate } from "./redux/date/dateSlice";
 
 const HeaderDatePicker = ({ datePick, toggleDatePick }) => {
     
-    const { selectedDate, setSelectedDate } = useDate();
+    const dispatch = useDispatch();
+    const selectedDate = useSelector(selectSelectedDate);
 
     const [container, setContainer] = useState(undefined);
     const [date, setDate] = useState({
@@ -17,18 +19,18 @@ const HeaderDatePicker = ({ datePick, toggleDatePick }) => {
         setContainer(window.document.body);
     }, [])
 
-    const handlePickerChange = useCallback((newVal, key) => {
+    const handlePickerChange = (newVal, key) => {
 
-        setSelectedDate({
+        dispatch(setSelectedDate({
             year: parseInt(newVal.year),
             month: parseInt(newVal.month) - 1,
-        });
+        }))
 
         setDate({
             ...newVal,
         })
 
-    }, [])
+    };
 
     return (
         <Drawer

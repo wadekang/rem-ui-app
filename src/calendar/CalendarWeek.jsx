@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import CalendarWeekDatesRow from "./CalendarWeekDatesRow";
-import CalendarWeekEventsRow from "./CalendarWeekEventsRow";
-import { useDate } from "./provider/DateProvider";
+import WeekEventsRow from "../event/WeekEventsRow";
+import CalendarOutOfMonthFilter from "./CalendarOutOfMonthFilter";
+import { useSelector } from "react-redux";
+import { selectSelectedDate } from "../redux/date/dateSlice";
 
 const CalendarWeek = ({ weekDates, events }) => {
 
     const ref = useRef(null);
-    const { selectedDate } = useDate();
-
+    const selectedDate = useSelector(selectSelectedDate);
+    
     const [weekEvents, setWeekEvents] = useState([]);
     const [outOfMonth, setOutOfMonth] = useState({
         width: 0,
@@ -61,7 +63,6 @@ const CalendarWeek = ({ weekDates, events }) => {
                 tmpStart.setDate(tmpStart.getDate() + 1);
             }
         }
-        else return;
 
         let left = dir === 1 ? singleWidth * (7 - count) : 0;
         let width = singleWidth * count;
@@ -89,9 +90,12 @@ const CalendarWeek = ({ weekDates, events }) => {
 
         let idx = 1;
         events.forEach(e => {
-            if (e.startDate > endDate || e.endDate < startDate) return;
-
             const event = { ...e };
+
+            event.startDate = new Date(e.startDate);
+            event.endDate = new Date(e.endDate);
+
+            if (event.startDate > endDate || event.endDate < startDate) return;
             
             if (event.startDate < startDate) {
                 event.startDate = startDate;
@@ -146,7 +150,7 @@ const CalendarWeek = ({ weekDates, events }) => {
                     singleWidth={singleWidth}
                 />
                 {eventMap.map((eventMapRow, idx) => (
-                    <CalendarWeekEventsRow
+                    <WeekEventsRow
                         key={idx}
                         eventMapRow={eventMapRow}
                         weekEvents={weekEvents}
@@ -155,16 +159,9 @@ const CalendarWeek = ({ weekDates, events }) => {
                 ))}
 
                 {outOfMonth.width > 0 &&
-                    <div
-                        style={{
-                            zIndex: 1,
-                            position: "absolute",
-                            top: "0px",
-                            left: outOfMonth.left,
-                            width: outOfMonth.width,
-                            height: "100%",
-                            backgroundColor: "rgba(255, 255, 255, 0.6)",
-                        }}
+                    <CalendarOutOfMonthFilter 
+                        left={outOfMonth.left}
+                        width={outOfMonth.width}
                     />
                 }
             </div>

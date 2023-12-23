@@ -93,7 +93,7 @@ const SidebarCalendarList = ({ title, calendars, addCalendar, editCalendar }) =>
                             <div style={{
                                 fontSize: "16px",
                             }}>
-                                {calendar.default ? "[기본] " + calendar.calendarName : calendar.calendarName}
+                                {calendar.owner && calendar.default ? "[기본] " + calendar.calendarName : calendar.calendarName}
                             </div>
                         </div>
                         <ArrowCircleRightOutlinedIcon 

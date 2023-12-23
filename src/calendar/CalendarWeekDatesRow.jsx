@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { useDate } from "./provider/DateProvider";
 
 const CalendarWeekDatesRow = ({ weekDates }) => {
 
