@@ -1,25 +1,30 @@
-import { useEffect } from "react";
+/** @jsxImportSource @emotion/react */
+
+import styled from "@emotion/styled";
 import CalendarBody from "./CalendarBody";
 import CalendarHeader from "./CalendarHeader";
+import { CalendarProvider } from "./provider/CalendarProvider";
+
+const CalendarContainer = styled.div`
+    position: absolute;
+
+    margin-top: 50px;
+
+    width: 100%;
+    height: calc(100% - 50px);
+
+    font-size: 12px;
+`;
 
 const Calendar = () => {
 
-    useEffect(() => {
-
-    }, [])
-
     return (
-        <div style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            paddingTop: "50px", // header height (40px) + header margin-bottom (10px)
-            height: "100%",
-            fontSize: "12px",
-        }}>
-            <CalendarHeader />
-            <CalendarBody />
-        </div>
+        <CalendarProvider>
+            <CalendarContainer>
+                <CalendarHeader />
+                <CalendarBody />
+            </CalendarContainer>
+        </CalendarProvider>
     )
 }
 

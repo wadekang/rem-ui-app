@@ -1,9 +1,17 @@
+/** @jsxImportSource @emotion/react */
+
 import { useState } from "react";
 import Header from "./Header";
 import Sidebar from "./sidebar/Sidebar";
 import Calendar from "./calendar/Calendar";
+import styled from "@emotion/styled";
 
-import "./Main.css";
+const MainContainer = styled.div`
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+`;
 
 const Main = () => {
 
@@ -12,12 +20,7 @@ const Main = () => {
     const toggleSidebar = () => setSidebar(!sidebar);
 
     return (
-        <div
-            style={{
-                width: "100%",
-                height: "100%",
-            }}
-        >
+        <MainContainer>
             <Sidebar 
                 sidebar={sidebar}
                 toggleSidebar={toggleSidebar}
@@ -26,7 +29,7 @@ const Main = () => {
                 toggleSidebar={toggleSidebar}
             />
             <Calendar />
-        </div>
+        </MainContainer>
     )
 }
 

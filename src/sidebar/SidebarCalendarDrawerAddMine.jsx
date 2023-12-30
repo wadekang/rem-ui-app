@@ -9,6 +9,7 @@ import { useCalendarManage } from "./provider/CalendarManageProvider";
 import { useDispatch } from "react-redux";
 import { fetchCalendars } from "../redux/calendar/calendarSlice";
 import { colors } from "../calendar/CalendarWeekEventsRowColorMap";
+import { SidebarCalendarDrawerBody } from "./SidebarCalendarDrawer";
 
 const SidebarCalendarDrawerAddMine = () => {
 
@@ -54,12 +55,7 @@ const SidebarCalendarDrawerAddMine = () => {
                 onClickDone={onClickDone}
             />
 
-            <div
-                style={{
-                    flex: 1,
-                    padding: "25px 20px",
-                }}
-            >
+            <SidebarCalendarDrawerBody>
                 <CalendarNameBox 
                     calendarName={calendarName}
                     setCalendarName={setCalendarName}
@@ -70,7 +66,7 @@ const SidebarCalendarDrawerAddMine = () => {
                     color={color}
                     setColor={setColor}
                 />
-            </div>
+            </SidebarCalendarDrawerBody>
         </Fragment>
     );
 }

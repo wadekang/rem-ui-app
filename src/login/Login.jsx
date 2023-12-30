@@ -1,4 +1,5 @@
-import "../Main.css";
+/** @jsxImportSource @emotion/react */
+
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { Fragment, useState } from "react";
 import { Divider } from "@mui/material";
@@ -10,8 +11,66 @@ import LoginSignUpDrawer from "./LoginSignUpDrawer";
 import axiosInstance from "../config/AxiosInstance";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/auth/authSlice";
+import styled from '@emotion/styled/macro'
 
-/** @jsxImportSource @emotion/react */
+const LoginContainer = styled.div`
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px 60px;
+`;
+
+const OAuthChild = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 15px;
+`;
+
+const LoginBoxChild = styled.div`
+    width: 100%;
+    margin-bottom: 15px;
+
+    & div:not(:last-child) {
+        margin-bottom: 5px;
+    }
+`;
+
+const LoginButton = styled.button`
+    width: 100%;
+    height: 34px;
+    padding: 5px;
+    background-color: #4DA4EA;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+`;
+
+const SignUpChild = styled.div`
+    width: 100%;
+    text-align: center;
+    font-size: 0.7rem;
+    color: gray;
+
+    & > span {
+        color: #4DA4EA;
+        cursor: pointer;
+    }
+`;
+
+const StyledDivider = styled(Divider)`
+    color: gray;
+    width: 100%;
+    margin-bottom: 15px;
+
+    font-size: 0.7rem;
+`;
 
 const Login = () => {
 
@@ -59,22 +118,8 @@ const Login = () => {
 
     return (
         <Fragment>
-            <div 
-                style={{
-                    height: "100%",
-                    width: "100%",
-
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-
-                    padding: "20px 60px",
-                }}
-            >
-                <div style={{
-                    marginBottom: "15px",
-                }}>
+            <LoginContainer>
+                <OAuthChild>
                     <GoogleOAuthProvider clientId={process.env.REACT_APP_REM_GOOGLE_AUTH_CLIENT_ID}>
                         <GoogleLogin 
                             onSuccess={(response) => handleGoogleSuccess(response)}
@@ -83,24 +128,10 @@ const Login = () => {
                             useOneTap
                         />
                     </GoogleOAuthProvider>
-                </div>
-                <Divider 
-                    style={{
-                        color: 'gray',
-                        width: "100%",
-                        marginBottom: "15px",
-                    }}
-                />
-                <div
-                    style={{
-                        width: "100%",
-                        marginBottom: "15px",
-                    }}
-                >
+                </OAuthChild>
+                <StyledDivider />
+                <LoginBoxChild>
                     <LoginInputBox
-                        style={{
-                            marginBottom: "5px",
-                        }}
                         icon={<EmailRoundedIcon />}
                         type="email"
                         placeholder="Email ID"
@@ -108,51 +139,25 @@ const Login = () => {
                         setState={setLoginId}
                     />
                     <LoginInputBox
-                        style={{
-                            marginBottom: "5px",
-                        }}
                         icon={<LockRoundedIcon />}
                         type="password"
                         placeholder="Password"
                         state={password}
                         setState={setPassword}
                     />
-                    <div
-                        style={{
-                            width: "100%",
-                            height: "34px",
-                            padding: "5px",
-                            backgroundColor: "#4DA4EA",
-                            color: "white",
-                            textAlign: "center",
-                            fontWeight: "bold",
-                        }}
+                    <LoginButton
                         onClick={handleFormLogin}
                     >
                         로그인
-                    </div>
-                </div>
-                <Divider
-                    style={{
-                        color: 'gray',
-                        width: "100%",
-                        fontSize: "0.7rem",
-                        marginBottom: "5px",
-                    }}
-                >
+                    </LoginButton>
+                </LoginBoxChild>
+                <StyledDivider>
                     OR
-                </Divider>
-                <div
-                    style={{
-                        width: "100%",
-                        textAlign: "center",
-                        fontSize: "0.7rem",
-                        color: 'gray',
-                    }}
-                >
-                    계정이 없으신가요? <span style={{color: "#4DA4EA"}} onClick={() => setSignup(true)}>회원가입</span>
-                </div>
-            </div>
+                </StyledDivider>
+                <SignUpChild>
+                    계정이 없으신가요? <span onClick={() => setSignup(true)}>회원가입</span>
+                </SignUpChild>
+            </LoginContainer>
             <LoginSignUpDrawer 
                 signup={signup}
                 closeSignUpDrawer={closeSignUpDrawer}

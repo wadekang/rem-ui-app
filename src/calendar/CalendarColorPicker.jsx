@@ -5,6 +5,24 @@ import { useEffect, useState, Fragment } from "react";
 import PaletteRoundedIcon from '@mui/icons-material/PaletteRounded';
 import { CirclePicker } from "react-color";
 import { colors } from "./CalendarWeekEventsRowColorMap";
+import styled from "@emotion/styled";
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+
+const ColorDiv = styled.div`
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 20px;
+`;
+
+const ColorDivItem = styled.div`
+    width: 1rem;
+    height: 1rem;
+
+    border-radius: 50%;
+
+    background-color: ${(props) => props.color};
+`;
 
 const CalendarColorPicker = ({ color, setColor }) => {
 
@@ -14,58 +32,68 @@ const CalendarColorPicker = ({ color, setColor }) => {
 
     return (
         <Fragment>
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "20px",
-                }}
-            >
-                <PaletteRoundedIcon 
-                    style={{
-                        marginRight: "20px",
-                    }}
-                    onClick={toggleColorPicker}
-                />
-                <div
-                    style={{
-                        borderRadius: "50%",
-                        backgroundColor: color,
-                        width: "1rem",
-                        height: "1rem"
-                    }}
-                    onClick={toggleColorPicker}
-                />
-            </div>
-            <div
+            <Accordion
                 css={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    zIndex: 1,
-                    marginBottom: colorPicker ? "20px" : "0px",
+                    boxShadow: "none",
 
-                    visibility: colorPicker ? "visible" : "hidden",
-                    opacity: colorPicker ? 1 : 0,
-                    transition: "opacity 0.3s, visibility 0.3s ease",
+                    '&::before': {
+                        display: "none",
+                    }
                 }}
+                expanded={colorPicker}
+                onChange={toggleColorPicker}
             >
-                <CirclePicker
-                    styles={{
-                        default: {
-                            card: {
-                                visibility: colorPicker ? "visible" : "hidden",
-                                maxHeight: colorPicker ? 168 : 0,
-                                transition: "max-height 0.3s, visibility 0.3s ease",
-                            }
+                <AccordionSummary
+                    css={{
+                        padding: "0px",
+
+                        '& .MuiAccordionSummary-content': {
+                            margin: "0px",
+                        },
+
+                        '& .Mui-expanded': {
+                            margin: "0px",
                         }
                     }}
-                    color={color}
-                    colors={colors}
-                    onChangeComplete={(color) => setColor(color.hex)}
-                />
-            </div>
+                >
+                    <ColorDiv>
+                        <PaletteRoundedIcon 
+                            css={{
+                                marginRight: "20px",
+                            }}
+                            onClick={toggleColorPicker}
+                        />
+                        <ColorDivItem
+                            color={color}
+                            onClick={toggleColorPicker}
+                        />
+                    </ColorDiv>
+                </AccordionSummary>
+                <AccordionDetails
+                    css={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+
+                        padding: "0px",
+                        marginBottom: "5px",
+                    }}
+                >
+                    <CirclePicker
+                        styles={{
+                            default: {
+                                card: {
+                                    height: 168,
+                                }
+                            }
+                        }}
+                        color={color}
+                        colors={colors}
+                        onChangeComplete={(color) => setColor(color.hex)}
+                    />
+                </AccordionDetails>
+            </Accordion>
         </Fragment>
     );
 }

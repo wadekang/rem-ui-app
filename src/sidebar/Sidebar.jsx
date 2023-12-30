@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import { Drawer } from "@mui/material";
 import SidebarHeader from "./SidebarHeader";
 import SidebarCalendarList from "./SidebarCalendarList";
@@ -52,11 +54,15 @@ const Sidebar = ({ sidebar, toggleSidebar }) => {
                     }}
                     sx={{
                         display: { xs: "block", sm: "none" },
+                    }}
+                    css={{
                         "& .MuiDrawer-paper": {
                             boxSizing: "border-box",
                             width: "85%",
                             padding: "0px 15px",
                         },
+
+                        height: "100%",
                     }}
                 >
                     <SidebarHeader />

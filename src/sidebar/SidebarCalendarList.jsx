@@ -1,7 +1,62 @@
+/** @jsxImportSource @emotion/react */
+
 import { AddRounded } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import styled from "@emotion/styled";
+
+const CalendarListContainer = styled.div`
+    padding-left: 5px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 10px;
+`;
+
+const CalendarListInfo = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+`;
+
+const CalendarListTitle = styled.div`
+    color: #808080;
+    font-size: 16px;
+`;
+
+const CalendarListItemDiv = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+`;
+
+const CalendarListItem = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const CalendarListItemCheckbox = styled.div`
+    width: 20px;
+    height: 20px;
+
+    border-radius: 20%;
+    border: 1px solid ${props => props.color};
+
+    background-color: ${props => props.checked ? props.color : "white"};
+
+    margin-right: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const CalendarListItemTitle = styled.div`
+    font-size: 16px;
+`;
 
 const SidebarCalendarList = ({ title, calendars, addCalendar, editCalendar }) => {
 
@@ -22,92 +77,59 @@ const SidebarCalendarList = ({ title, calendars, addCalendar, editCalendar }) =>
     }, [calendars])
 
     return (
-        <div style={{
-            paddingLeft: "5px",
-            borderBottom: "1px solid #e0e0e0",
-            marginBottom: "10px",
-        }}>
-            <div style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: "15px",
-            }}>
-                <div style={{
-                    color: "#808080",
-                    fontSize: "16px",
-                }}>
+        <CalendarListContainer>
+            <CalendarListInfo>
+                <CalendarListTitle>
                     {title}
-                </div>
+                </CalendarListTitle>
                 <AddRounded 
-                    style={{
+                    css={{
                         color: "#808080",
                         fontSize: "20px",
                         opacity: 0.5
                     }}
                     onClick={addCalendar}
                 />
-            </div>
+            </CalendarListInfo>
             <div>
                 {calendars && checked && calendars.map((calendar, idx) => (
-                    <div key={calendar.calendarId} style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        marginBottom: "10px",
-                    }}>
-                        <div 
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                            onClick={() => setChecked((prev) => {
-                                const temp = [...prev];
-                                temp[idx] = !temp[idx];
-                                return temp;
-                            })}
-                        >
-                            <div
-                                style={{
-                                    width: "20px",
-                                    height: "20px",
-                                    borderRadius: "20%",
-                                    backgroundColor: checked[idx] ? calendar.color : "white",
-                                    marginRight: "10px",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    border: `1px solid ${calendar.color}`,
-                                }}
+                    <CalendarListItemDiv key={calendar.calendarId} >
+                        <CalendarListItem>
+                            <CalendarListItemCheckbox
+                                checked={checked[idx]}
+                                color={calendar.color}
+                                onClick={() => setChecked((prev) => {
+                                    const temp = [...prev];
+                                    temp[idx] = !temp[idx];
+                                    return temp;
+                                })}
                             >
                                 {checked[idx] && (
                                     <CheckOutlinedIcon 
-                                        style={{
+                                        css={{
                                             color: "white",
                                             fontSize: "18px",
                                             fontWeight: 900,
                                         }}
                                     />
                                 )}
-                            </div>
-                            <div style={{
-                                fontSize: "16px",
-                            }}>
+                            </CalendarListItemCheckbox>
+                            <CalendarListItemTitle>
                                 {calendar.owner && calendar.default ? "[기본] " + calendar.calendarName : calendar.calendarName}
-                            </div>
-                        </div>
+                            </CalendarListItemTitle>
+                        </CalendarListItem>
                         <ArrowCircleRightOutlinedIcon 
-                            style={{
+                            css={{
                                 fontSize: "20px",
                                 color: "#808080",
                                 opacity: 0.5
                             }}
                             onClick={() => editCalendar(calendar)}
                         /> 
-                    </div>
+                    </CalendarListItemDiv>
                 ))}
             </div>
-        </div>
+        </CalendarListContainer>
     );
 }
 

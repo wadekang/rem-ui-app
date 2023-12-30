@@ -5,7 +5,8 @@ export const dateSlice = createSlice({
     initialState: {
         selectedDate: {
             year: new Date().getFullYear(),
-            month: new Date().getMonth()
+            month: new Date().getMonth(),
+            day: new Date().getDate()
         }
     },
     reducers: {

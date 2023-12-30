@@ -1,20 +1,38 @@
+import styled from "@emotion/styled";
 import React from "react";
 
 /** @jsxImportSource @emotion/react */
 
+const Div = styled.div`
+
+    background-color: ${props => props.backgroundColor};
+
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: transparent;
+    padding: 5px;
+
+`;
+
+const Input = styled.input`
+    flex: 1;
+    background-color: inherit;
+    color: rgba(0, 0, 0, 0.8);
+
+    ::placeholder {
+        font-size: 0.7rem;
+    }
+`
+
 const LoginInputBox = ({ style, icon, type, placeholder, backgroundColor = "#f2f2f2", state, setState }) => {
 
     return (
-        <div
-            style={{
+        <Div
+            css={{
                 ...style,
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-                backgroundColor: backgroundColor,
-                border: "trasparent",
-                padding: "5px"
             }}
+            backgroundColor={backgroundColor}
         >
             {React.cloneElement(icon, {
                 style: {
@@ -23,22 +41,13 @@ const LoginInputBox = ({ style, icon, type, placeholder, backgroundColor = "#f2f
                     color: "rgba(0, 0, 0, 0.5)",
                 }
             })}
-            <input 
-                css={{
-                    flex: 1,
-                    backgroundColor: "inherit",
-                    color: "rgba(0, 0, 0, 0.8)",
-
-                    "::placeholder": {
-                        "font-size": "0.7rem",
-                    }
-                }}
+            <Input
                 type={type}
                 placeholder={placeholder}
                 value={state}
                 onChange={(e) => setState(e.target.value)}
             />
-        </div>
+        </Div>
     );
 }
 

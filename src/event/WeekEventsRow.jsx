@@ -1,7 +1,19 @@
+/** @jsxImportSource @emotion/react */
+
 import { useEffect, useState } from "react";
 import WeekEvents from "./WeekEvents";
+import styled from "@emotion/styled";
 
-const WeekEventsRow = ({ eventMapRow, weekEvents, singleWidth }) => {
+const WeekEventsRowContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 2px;
+`;
+
+const WeekEventsRow = ({ eventMapRow, weekEvents }) => {
 
     const [children, setChildren] = useState([]);
     
@@ -25,21 +37,13 @@ const WeekEventsRow = ({ eventMapRow, weekEvents, singleWidth }) => {
     }, [eventMapRow, weekEvents])
 
     const makeEvent = (key, event) => {
-        return <WeekEvents key={key} event={event} singleWidth={singleWidth} />
+        return <WeekEvents key={key} event={event} />
     }
 
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "2px",
-            }}
-        >
+        <WeekEventsRowContainer>
             {children}
-        </div>
+        </WeekEventsRowContainer>
     );
 }
 

@@ -1,18 +1,63 @@
-import { Fragment, useEffect, useState } from "react";
+/** @jsxImportSource @emotion/react */
+
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Divider } from "@mui/material";
 import CalendarWeek from "./CalendarWeek";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEventsByDate, selectEvents } from "../redux/event/eventSlice";
 import { selectSelectedDate } from "../redux/date/dateSlice";
+import CalendarDayDetail from "./CalendarDayDetail";
+import { useCalendar } from "./provider/CalendarProvider";
+import styled from "@emotion/styled";
+
+const BodyDiv = styled.div`
+    width: 100%;
+    height: calc(100% - 30px);
+
+    display: flex;
+    flex-direction: column;
+`;
+
+const CalendarDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: ${props => props.detailView ? (props.maxHeight / 2) - 40 : props.maxHeight}px;
+
+    transition: height 0.4s ease-in-out;
+`;
 
 const CalendarBody = () => {
 
     const selectedDate = useSelector(selectSelectedDate);
 
+    const ref = useRef(null);
     const [dates, setDates] = useState([]);
+    const [maxHeight, setMaxHeight] = useState(0);
 
     const dispatch = useDispatch();
     const events = useSelector(selectEvents);
+
+    const { setSingleWidth, detailView } = useCalendar();
+
+    useEffect(() => {
+
+        setSize();
+        
+        window.addEventListener('resize', setSize);
+
+        return () => {
+            window.removeEventListener('resize', setSize);
+        }
+    }, [])
+
+    const setSize = () => {
+        if (ref.current) {
+            setSingleWidth((ref.current.offsetWidth - 10) / 7); // padding l, r = 5
+            setMaxHeight(ref.current.offsetHeight)
+        }
+    }
 
     useEffect(() => {
 
@@ -31,7 +76,7 @@ const CalendarBody = () => {
         getEvents(newDates[0].weekDates[0], newDates[newDates.length - 1].weekDates[6]);
         setDates(newDates);
 
-    }, [selectedDate])
+    }, [selectedDate.year, selectedDate.month])
 
     /**
      * Get week range of yyyy-mm
@@ -111,24 +156,30 @@ const CalendarBody = () => {
     }
 
     return (
-        <div
-            style={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "column",
-                flex: 1
-            }}
-        >
-            {dates.map((date, idx) => (
-                <Fragment key={idx}>
-                    <CalendarWeek 
-                        weekDates={date.weekDates}
-                        events={events}
+        <BodyDiv ref={ref}>
+            <CalendarDiv
+                detailView={detailView}
+                maxHeight={maxHeight}
+            >
+                {dates.map((date, idx) => (
+                    <Fragment key={idx}>
+                        <CalendarWeek 
+                            weekDates={date.weekDates}
+                            events={events}
+                        />
+                        {!detailView && idx !== dates.length - 1 && <Divider />}
+                    </Fragment>
+                ))}
+            </CalendarDiv>
+            {detailView && 
+                <Fragment>
+                    <Divider />
+                    <CalendarDayDetail 
+                        maxHeight={maxHeight}
                     />
-                    {idx !== dates.length - 1 && <Divider />}
                 </Fragment>
-            ))}
-        </div>
+            }
+        </BodyDiv>
     );
 }
 

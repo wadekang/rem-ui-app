@@ -8,6 +8,7 @@ import axiosInstance from "../config/AxiosInstance";
 import { useCalendarManage } from "./provider/CalendarManageProvider";
 import { useDispatch } from "react-redux";
 import { fetchCalendars } from "../redux/calendar/calendarSlice";
+import { SidebarCalendarDrawerBody } from "./SidebarCalendarDrawer";
 
 /** @jsxImportSource @emotion/react */
 
@@ -51,12 +52,7 @@ const SidebarCalendarDrawerEditMine = () => {
                 onClickDone={onClickDone}
             />
 
-            <div
-                style={{
-                    flex: 1,
-                    padding: "25px 20px",
-                }}
-            >
+            <SidebarCalendarDrawerBody>
                 <CalendarNameBox 
                     calendarName={calendarName}
                     setCalendarName={setCalendarName}
@@ -71,7 +67,7 @@ const SidebarCalendarDrawerEditMine = () => {
                 <CalendarCodeGenerator 
                     calendarId={calendarManageInfo.calendarId}
                 />
-            </div>
+            </SidebarCalendarDrawerBody>
             <CalendarDeleteButton
                 calendarId={calendarManageInfo.calendarId}
                 deleteUrl={'/api/calendar/deleteCalendar'}

@@ -1,35 +1,44 @@
+/** @jsxImportSource @emotion/react */
 
-const headerItemStyle = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
-}
+import styled from "@emotion/styled";
+import { useCalendar } from "./provider/CalendarProvider";
+
+const HeaderDiv = styled.div`
+    width: 100%;
+    height: 30px;
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 0px 5px;
+`;
+
+const DayDiv = styled.div`
+    flex: 1;    
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:first-of-type {
+        color: red;
+    }
+
+    &:last-of-type {
+        color: blue;
+    }
+`;
 
 const CalendarHeader = () => {
 
+    const { days } = useCalendar();
+
     return (
-        <div style={{
-            display: "flex",
-            width: "100%",
-            height: "30px",
-            justifyContent: "space-between",
-            padding: "0px 5px",
-        }}>
-            <div style={{
-                ...headerItemStyle,
-                color: "red",
-            }}>일</div>
-            <div style={headerItemStyle}>월</div>
-            <div style={headerItemStyle}>화</div>
-            <div style={headerItemStyle}>수</div>
-            <div style={headerItemStyle}>목</div>
-            <div style={headerItemStyle}>금</div>
-            <div style={{
-                ...headerItemStyle,
-                color: "blue",
-            }}>토</div>
-        </div>
+        <HeaderDiv>
+            {days.map((day, index) => (
+                <DayDiv key={index}>{day}</DayDiv>
+            ))}
+        </HeaderDiv>
     )
 }
 

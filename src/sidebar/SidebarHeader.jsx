@@ -1,6 +1,50 @@
+/** @jsxImportSource @emotion/react */
+
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutAction, selectUserInfo } from '../redux/auth/authSlice';
+import styled from '@emotion/styled';
+
+const SidebarHeaderContainer = styled.div`
+    height: 80px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 10px;
+`;
+
+const Div = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const Avatar = styled.img`
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    margin-right: 10px;
+`;
+
+const UserInfoDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+`;
+
+const UserName = styled.div`
+    font-weight: 700;
+    font-size: 18px;
+`;
+
+const UserEmail = styled.div`
+    font-size: 12px;
+    color: #808080;
+`;
 
 const SidebarHeader = () => {
 
@@ -12,58 +56,28 @@ const SidebarHeader = () => {
     }
 
     return (
-        <div style={{
-            display: "flex",
-            height: "10%",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "10px",
-        }}>
-            <div style={{
-                display: "flex",
-                alignItems: "center",
-            }}>
-                <img 
+        <SidebarHeaderContainer>
+            <Div>
+                <Avatar 
                     src={userInfo.profileImageUrl ? userInfo.profileImageUrl : '/profile_image_default.png'}
                     alt="profile_image"
-                    style={{
-                        width: "35px",
-                        height: "35px",
-                        borderRadius: "50%",
-                        marginRight: "10px",
-                    }}
                 />
-                <div style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "flex-start",
-                }}>
-                    <div
-                        style={{
-                            fontWeight: 700,
-                            fontSize: "18px",
-                        }}
-                    >
+                <UserInfoDiv>
+                    <UserName>
                         {userInfo.name}
-                    </div>
-                    <div
-                        style={{
-                            fontSize: "12px",
-                            color: "#808080",
-                        }}
-                    >
+                    </UserName>
+                    <UserEmail>
                         {userInfo.email}
-                    </div>
-                </div>
-            </div>
+                    </UserEmail>
+                </UserInfoDiv>
+            </Div>
             <SettingsOutlinedIcon 
-                style={{
+                css={{
                     fontSize: "28px"
                 }}
                 onClick={handleLogout}
             />
-        </div>
+        </SidebarHeaderContainer>
     );
 }
 

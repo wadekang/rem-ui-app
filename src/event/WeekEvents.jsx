@@ -1,35 +1,48 @@
-import { getEventColor } from "../calendar/CalendarWeekEventsRowColorMap";
+/** @jsxImportSource @emotion/react */
 
-const WeekEvents = ({ event, singleWidth }) => {
+import styled from "@emotion/styled";
+import { getEventColor } from "../calendar/CalendarWeekEventsRowColorMap";
+import { useCalendar } from "../calendar/provider/CalendarProvider";
+
+const WeekEventsContainer = styled.div`
+    width: ${props => props.length ? props.singleWidth * props.length : props.singleWidth}px;
+
+    font-size: 10px;
+    padding: 0px 2px;
+    line-height: 14px;
+`;
+
+const WeekEventsDiv = styled.div`
+    border-radius: 5%;
+
+    white-space: nowrap;
+    overflow: hidden;
+
+    background-color: ${props => props.backgroundColor};
+    color: ${props => props.color};
+    padding-left: 2px;
+`;
+
+const WeekEvents = ({ event }) => {
+
+    const { singleWidth } = useCalendar();
 
     return (
-        <div
-            style={{
-                width: event ? singleWidth * event.length : singleWidth,
-                fontSize: "10px",
-                color: "gray",
-                padding: "0px 2px",
-                lineHeight: "14px",
-                position: "relative",
-            }}
+        <WeekEventsContainer
+            length={event ? event.length : 0}
+            singleWidth={singleWidth}
         >
             { event ? (
-                <div
-                    style={{
-                        borderRadius: "5%",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        backgroundColor: event.color,
-                        color: getEventColor(event.color),
-                        paddingLeft: '2px'
-                    }}
+                <WeekEventsDiv
+                    backgroundColor={event.color}
+                    color={getEventColor(event.color)}
                 >
                     {event.eventName}
-                </div>
+                </WeekEventsDiv>
             ) : (
                 null
             )}
-        </div>
+        </WeekEventsContainer>
     );
 }
 

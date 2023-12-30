@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
@@ -6,6 +8,37 @@ import { Fragment, useEffect, useState } from "react";
 import HeaderDatePicker from "./HeaderDatePicker";
 import { useSelector } from "react-redux";
 import { selectSelectedDate } from "./redux/date/dateSlice";
+import styled from "@emotion/styled";
+
+const HeaderContainer = styled.div`
+    height: 40px;
+    width: 100%;
+    padding: 3px 15px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: ${props => props.isDrawerOpen ? "rgb(63, 61, 67)" : "white"};
+    color: ${props => props.isDrawerOpen ? "white": "black"};
+
+    z-index: 4;
+    position: absolute;
+    left: 0;
+    top: 0;
+`;
+
+const Div = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+const DateDiv = styled.div`
+    text-align: center;
+    font-weight: 800;
+    font-size: 18px;
+    margin-right: 5px;
+`;
 
 const Header = ({ toggleSidebar }) => {
 
@@ -39,54 +72,23 @@ const Header = ({ toggleSidebar }) => {
                 datePick={datePick}
                 toggleDatePick={toggleDatePick}
             />
-            <div 
-                style={{ 
-                    height: "40px", 
-                    padding: "3px 15px",
-                    display: "flex",
-                    width: "100%",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    
-                    backgroundColor: isDrawerOpen ? "rgb(63, 61, 67)" : "white",
-                    color: isDrawerOpen ? "white": "black",
-
-                    zIndex: 4,
-                    position: "absolute",
-                    left: 0,
-                    top: 0,
-                }}
+            <HeaderContainer
+                isDrawerOpen={isDrawerOpen}
             >
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
+                <Div>
                     <MenuRoundedIcon 
-                        style={{
+                        css={{
                             marginRight: "10px",
                         }}
                         onClick={onClickMenu}
                     />
                     
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                        }}
+                    <Div
                         onClick={toggleDatePick}
                     >
-                        <div
-                            style={{
-                                textAlign: "center",
-                                fontWeight: 800,
-                                fontSize: 18,
-                                marginRight: "5px",
-                            }}
-                        >
+                        <DateDiv>
                             {selectedDate.year}. {selectedDate.month + 1}
-                        </div>
+                        </DateDiv>
                         {isDrawerOpen 
                         ? (
                             <KeyboardArrowUpRoundedIcon />
@@ -95,17 +97,16 @@ const Header = ({ toggleSidebar }) => {
                             <KeyboardArrowDownRoundedIcon />
                         )
                         }
-                    </div>
-                </div>
+                    </Div>
+                </Div>
                 <div>
-                    <SearchRoundedIcon 
-                        style={{ }}
+                    <SearchRoundedIcon
                         onClick={() => {
                             setDatePick(false);
                         }}
                     />
                 </div>
-            </div>
+            </HeaderContainer>
         </Fragment>
 	);
 };

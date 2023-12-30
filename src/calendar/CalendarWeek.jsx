@@ -1,20 +1,54 @@
-import { useEffect, useRef, useState } from "react";
+/** @jsxImportSource @emotion/react */
+
+import { useEffect, useState } from "react";
 import CalendarWeekDatesRow from "./CalendarWeekDatesRow";
 import WeekEventsRow from "../event/WeekEventsRow";
-import CalendarOutOfMonthFilter from "./CalendarOutOfMonthFilter";
-import { useSelector } from "react-redux";
-import { selectSelectedDate } from "../redux/date/dateSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectSelectedDate, setSelectedDate } from "../redux/date/dateSlice";
+import { useCalendar } from "./provider/CalendarProvider";
+import WeekEventsMini from "../event/WeekEventsMini";
+import styled from "@emotion/styled";
+
+const CalendarWeekContainer = styled.div`
+    flex: 1;
+
+    padding: 0px 5px;
+`;
+
+const CalendarWeekDiv = styled.div`
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+`;
+
+const CalendarWeekDivMask = styled.div`
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    z-index: 1;
+`;
+
+const CalendarWeekDivDayMask = styled.div`
+    flex: 1;
+
+    background-color: ${props => props.masking ? "rgba(255, 255, 255, 0.6)" : null};
+    
+    z-index: 1;
+`; 
 
 const CalendarWeek = ({ weekDates, events }) => {
 
-    const ref = useRef(null);
     const selectedDate = useSelector(selectSelectedDate);
+    const dispatch = useDispatch();
     
     const [weekEvents, setWeekEvents] = useState([]);
-    const [outOfMonth, setOutOfMonth] = useState({
-        width: 0,
-        left: 0,
-    });
     const [eventMap, setEventMap] = useState([
         [0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0],
@@ -22,57 +56,14 @@ const CalendarWeek = ({ weekDates, events }) => {
         [0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0],
     ]);
-    const [singleWidth, setSingleWidth] = useState(0);
 
-    useEffect(() => {
-
-        if (ref.current) {
-            setSingleWidth(ref.current.offsetWidth / 7);
-        }
-
-    }, [])
+    const { detailView, openDetailView } = useCalendar();
 
     useEffect(() => {
 
         handleEvent();
 
     }, [events])
-
-    useEffect(() => {
-
-        const singleWidth = ref.current.offsetWidth / 7;
-        const tmpStart = new Date(weekDates[0]);
-
-        let count = 0;
-        let dir = 0;
-
-        if (tmpStart.getMonth() !== selectedDate.month) {
-            while (tmpStart <= weekDates[6]) {
-                if (tmpStart.getMonth() !== selectedDate.month) {
-                    count++;
-                }
-                tmpStart.setDate(tmpStart.getDate() + 1);
-            }
-        }
-        else if (weekDates[6].getMonth() !== selectedDate.month) {
-            dir = 1;
-            while (tmpStart <= weekDates[6]) {
-                if (tmpStart.getMonth() !== selectedDate.month) {
-                    count++;
-                }
-                tmpStart.setDate(tmpStart.getDate() + 1);
-            }
-        }
-
-        let left = dir === 1 ? singleWidth * (7 - count) : 0;
-        let width = singleWidth * count;
-
-        setOutOfMonth({
-            width,
-            left,
-        });
-
-    }, [weekDates])
 
     const handleEvent = () => {
 
@@ -92,8 +83,8 @@ const CalendarWeek = ({ weekDates, events }) => {
         events.forEach(e => {
             const event = { ...e };
 
-            event.startDate = new Date(e.startDate);
-            event.endDate = new Date(e.endDate);
+            event.startDate = new Date(e.startDate + "T00:00:00");
+            event.endDate = new Date(e.endDate + "T00:00:00");
 
             if (event.startDate > endDate || event.endDate < startDate) return;
             
@@ -130,42 +121,47 @@ const CalendarWeek = ({ weekDates, events }) => {
         setEventMap(newEventMap);
     }
 
+    const onClickDay = (date) => {
+        dispatch(setSelectedDate({
+            year: date.getFullYear(),
+            month: date.getMonth(),
+            day: date.getDate(),
+        }));
+
+        openDetailView();
+    }
+
     return (
-        <div
-            style={{
-                padding: "0px 5px",
-                flex: 1
-            }}
-        >
-            <div
-                ref={ref}
-                style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "relative",
-                }}
-            >
+        <CalendarWeekContainer>
+            <CalendarWeekDiv>
+                <CalendarWeekDivMask>
+                    {weekDates.map((date, idx) => (
+                        <CalendarWeekDivDayMask
+                            masking={date.getMonth() !== selectedDate.month}
+                            key={idx}
+                            onClick={() => onClickDay(date)}
+                        />
+                    ))}
+                </CalendarWeekDivMask>
                 <CalendarWeekDatesRow 
                     weekDates={weekDates}
-                    singleWidth={singleWidth}
                 />
-                {eventMap.map((eventMapRow, idx) => (
-                    <WeekEventsRow
-                        key={idx}
-                        eventMapRow={eventMapRow}
+                {detailView ? (
+                    <WeekEventsMini
+                        weekDates={weekDates}
                         weekEvents={weekEvents}
-                        singleWidth={singleWidth}
                     />
-                ))}
-
-                {outOfMonth.width > 0 &&
-                    <CalendarOutOfMonthFilter 
-                        left={outOfMonth.left}
-                        width={outOfMonth.width}
-                    />
-                }
-            </div>
-        </div>
+                ) : (
+                    eventMap.map((eventMapRow, idx) => (
+                        <WeekEventsRow
+                            key={idx}
+                            eventMapRow={eventMapRow}
+                            weekEvents={weekEvents}
+                        />
+                    ))
+                )}
+            </CalendarWeekDiv>
+        </CalendarWeekContainer>
     );
 };
 

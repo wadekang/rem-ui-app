@@ -27,8 +27,9 @@ export const tokenValidOnLoad = () => {
     return async (dispatch, getState) => {
         const userInfo = await axiosInstance.get('/api/auth/isTokenValid', {})
             .then(res => res.data)
-            .then(data => data.code === 200 ? data.data : null)
-
+            .then(data => data.data)
+            .catch(err => null);
+        
         if (userInfo) {
             dispatch(login(userInfo));
         }

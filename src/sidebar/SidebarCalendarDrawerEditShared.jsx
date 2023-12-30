@@ -7,6 +7,7 @@ import axiosInstance from "../config/AxiosInstance";
 import { useDispatch } from "react-redux";
 import { useCalendarManage } from "./provider/CalendarManageProvider";
 import { fetchCalendars } from "../redux/calendar/calendarSlice";
+import { SidebarCalendarDrawerBody } from "./SidebarCalendarDrawer";
 
 const SidebarCalendarDrawerEditShared = () => {
 
@@ -45,12 +46,7 @@ const SidebarCalendarDrawerEditShared = () => {
                 onClickDone={onClickDone}
             />
 
-            <div
-                style={{
-                    flex: 1,
-                    padding: "25px 20px",
-                }}
-            >
+            <SidebarCalendarDrawerBody>
                 <CalendarNameBox
                     calendarName={calendarManageInfo.calendarName}
                     isOwner={false}
@@ -60,7 +56,7 @@ const SidebarCalendarDrawerEditShared = () => {
                     color={color}
                     setColor={setColor}
                 />
-            </div>
+            </SidebarCalendarDrawerBody>
             <CalendarDeleteButton 
                 calendarId={calendarManageInfo.calendarId}
                 deleteUrl={'/api/calendar/deleteSharedCalendar'}

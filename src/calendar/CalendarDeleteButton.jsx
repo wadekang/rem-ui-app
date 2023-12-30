@@ -1,8 +1,31 @@
+/** @jsxImportSource @emotion/react */
+
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import axiosInstance from '../config/AxiosInstance';
 import { useDispatch } from 'react-redux';
 import { fetchCalendars } from '../redux/calendar/calendarSlice';
 import { useCalendarManage } from '../sidebar/provider/CalendarManageProvider';
+import styled from '@emotion/styled';
+
+const DeleteButtonDiv = styled.div`
+    padding-bottom: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const DeleteButton = styled.button`
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    box-shadow: 0px 2px 3px 1px rgba(0,0,0,0.25);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
 
 const CalendarDeleteButton = ({ calendarId, deleteUrl }) => {
 
@@ -27,30 +50,13 @@ const CalendarDeleteButton = ({ calendarId, deleteUrl }) => {
     }
 
     return (
-        <div
-            style={{
-                paddingBottom: "30px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
-            <div
-                style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "50%",
-                    boxShadow: "0px 2px 3px 1px rgba(0,0,0,0.25)",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
+        <DeleteButtonDiv>
+            <DeleteButton>
                 <DeleteRoundedIcon 
                     onClick={deleteCalendar}
                 />
-            </div>
-        </div>
+            </DeleteButton>
+        </DeleteButtonDiv>
     );
 }
 
